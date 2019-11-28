@@ -16,7 +16,7 @@ public class LotteryPanel : MonoBehaviour {
     public AnimationCurve line;
     public Text goldText;
     public Image icon;
-
+    public int randomInt;
 
     public List<int> currentList = new List<int>();
     //int current = 0;
@@ -46,6 +46,7 @@ public class LotteryPanel : MonoBehaviour {
         H = textList[0].GetComponent<RectTransform>().sizeDelta.y;
 
         //SetRandomList(Random.Range(0, R));
+        SetRandomList(randomInt);
         StartCoroutine(OnInit());
     }
 
@@ -87,18 +88,10 @@ public class LotteryPanel : MonoBehaviour {
                 int tcurrent = (current + (int)Mathf.Floor(x)) % 10;
                 for (int i = 0; i < tlist.Count; i++)
                 {
-                    //tlist[i].text = ((current + i) % 10) + "";
+                    
                     tlist[i].GetComponent<RectTransform>().anchoredPosition =
                     new Vector2(0, -H * line.Evaluate(x) -  H + i * H);
-                    //Debug.Log("eeeee:"+( -H * line.Evaluate(x) + 2*H - index * H));
-                    //float diff = x - Mathf.Floor(x);
                     
-
-                    //for (int j = 0; j < tlist.Count; j++)
-                    //{
-                        //tlist[j].text = ((tcurrent + j) % 10) + "";
-                        //Debug.Log("eeeee:"+( -H * line.Evaluate(x) + 2*H - index * H));
-                    //}
                     tlist[i].text = ((tcurrent + i) % 10) + "";
                 }
             }, t, t * 0.01f).SetEase(Ease.InCubic).onComplete = () =>
@@ -138,6 +131,12 @@ public class LotteryPanel : MonoBehaviour {
     }
 
     public void OnClick() {
+        for (int i = 0; i < textLists.Count; i++)
+        {
+            currentList[i]=0;
+            //R *= 10;
+        }
+        SetRandomList(randomInt);
         StartCoroutine(OnInit());
     }
 
@@ -145,7 +144,5 @@ public class LotteryPanel : MonoBehaviour {
     {
         yield return new WaitForSeconds(1f);
         //gameObject.SetActive(false);
-       
-
     }
 }
